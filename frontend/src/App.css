@@ -1,0 +1,355 @@
+/* ============================================================
+   App.css — All styles for the LinkSnip URL Shortener
+
+   Sections:
+   1. Reset and base
+   2. Header
+   3. Main layout
+   4. Shorten form and result card
+   5. Divider
+   6. URL table
+   7. Empty state
+   8. Responsive
+   ============================================================ */
+
+
+/* ── 1. Reset and base ── */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #f5f7ff;
+  color: #1a1a2e;
+  min-height: 100vh;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* ── 2. Header ── */
+.app-header {
+  background: linear-gradient(135deg, #1a3a5c 0%, #2e75b6 100%);
+  padding: 48px 20px 56px;
+  text-align: center;
+  color: white;
+}
+
+.header-content {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.header-logo {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.logo-text { color: white; }
+
+.header-tagline {
+  font-size: 1.05rem;
+  opacity: 0.8;
+  line-height: 1.5;
+}
+
+
+/* ── 3. Main layout ── */
+.main-container {
+  flex: 1;
+  max-width: 900px;
+  margin: -32px auto 0; /* pulls up to overlap the header slightly */
+  padding: 0 20px 60px;
+  width: 100%;
+}
+
+
+/* ── 4. Shorten form and result card ── */
+.shorten-section {
+  background: white;
+  border-radius: 18px;
+  padding: 28px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  margin-bottom: 32px;
+}
+
+.shorten-form {
+  display: flex;
+  gap: 10px;
+}
+
+.url-input {
+  flex: 1;
+  padding: 13px 18px;
+  border: 2px solid #d0d8ea;
+  border-radius: 10px;
+  font-size: 1rem;
+  color: #1a1a2e;
+  outline: none;
+  transition: border-color 0.2s;
+  min-width: 0; /* important: prevents input from overflowing flex container */
+}
+
+.url-input::placeholder { color: #aaa; }
+.url-input:focus         { border-color: #2e75b6; }
+
+.shorten-btn {
+  padding: 13px 26px;
+  background: #1a3a5c;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.shorten-btn:hover    { background: #2e75b6; }
+.shorten-btn:active   { transform: scale(0.97); }
+.shorten-btn:disabled { background: #aaa; cursor: not-allowed; }
+
+.form-error {
+  color: #dc3545;
+  font-size: 0.9rem;
+  margin-top: 12px;
+  background: #fff0f0;
+  border: 1px solid #ffd0d0;
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+
+/* Result card — shown after a URL is successfully shortened */
+.result-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 20px;
+  padding: 18px 20px;
+  background: #f0f7ff;
+  border: 1.5px solid #2e75b6;
+  border-radius: 12px;
+  flex-wrap: wrap;
+}
+
+.result-left { flex: 1; min-width: 0; }
+
+.result-label {
+  font-size: 0.8rem;
+  color: #555;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.result-link {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1a3a5c;
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.result-link:hover { text-decoration: underline; }
+
+.result-original {
+  font-size: 0.78rem;
+  color: #888;
+  margin-top: 6px;
+  word-break: break-all;
+}
+
+.result-original span { color: #555; }
+
+.copy-btn {
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: 1.5px solid #2e75b6;
+  background: transparent;
+  color: #2e75b6;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s, color 0.2s;
+  flex-shrink: 0;
+}
+
+.copy-btn:hover  { background: #2e75b6; color: white; }
+.copy-btn.copied { background: #28a745; border-color: #28a745; color: white; }
+
+
+/* ── 5. Divider ── */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  color: #888;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #d0d8ea;
+}
+
+.status-msg {
+  text-align: center;
+  color: #666;
+  padding: 20px;
+  font-size: 0.95rem;
+}
+
+.status-msg.error { color: #dc3545; }
+
+
+/* ── 6. URL table ── */
+.table-wrapper {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+  overflow: hidden;      /* clips the table corners to the border-radius */
+  overflow-x: auto;      /* allows horizontal scroll on small screens */
+}
+
+.url-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.url-table thead {
+  background: #1a3a5c;
+  color: white;
+}
+
+.url-table th {
+  padding: 14px 16px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.url-table tbody tr {
+  border-bottom: 1px solid #eef0f8;
+  transition: background 0.15s;
+}
+
+.url-table tbody tr:last-child { border-bottom: none; }
+.url-table tbody tr:hover       { background: #f8faff; }
+
+.url-table td {
+  padding: 12px 16px;
+  vertical-align: middle;
+  color: #333;
+}
+
+/* Original URL cell */
+.td-original a {
+  color: #555;
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+
+.td-original a:hover { text-decoration: underline; color: #1a3a5c; }
+
+/* Short URL cell */
+.td-short a {
+  color: #2e75b6;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.td-short a:hover { text-decoration: underline; }
+
+/* Click count badge */
+.click-badge {
+  background: #e4f0ff;
+  color: #1a3a5c;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+}
+
+/* Date column */
+.td-date { color: #888; font-size: 0.82rem; white-space: nowrap; }
+
+/* Action buttons column */
+.td-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.action-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1.5px solid #d0d8ea;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.copy-action:hover   { background: #e4f0ff; border-color: #2e75b6; }
+.copy-action.copied  { background: #d4edda; border-color: #28a745; }
+.delete-action:hover { background: #ffe4e4; border-color: #dc3545; }
+
+
+/* ── 7. Empty state ── */
+.empty-table {
+  text-align: center;
+  padding: 60px 20px;
+  color: #999;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+}
+
+.empty-icon {
+  font-size: 3.5rem;
+  display: block;
+  margin-bottom: 14px;
+}
+
+.empty-table p   { font-size: 1rem; margin-bottom: 6px; }
+.empty-sub       { font-size: 0.88rem; color: #bbb; }
+
+
+/* ── 8. Responsive ── */
+@media (max-width: 640px) {
+  .shorten-form   { flex-direction: column; }
+  .shorten-btn    { width: 100%; }
+  .result-card    { flex-direction: column; align-items: flex-start; }
+  .copy-btn       { width: 100%; }
+  .app-header     { padding: 36px 20px 48px; }
+  .header-logo    { font-size: 1.7rem; }
+}
